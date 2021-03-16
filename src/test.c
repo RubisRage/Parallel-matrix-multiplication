@@ -4,7 +4,6 @@
 int main(){
     DATA d = read_mat("data/mat2.data");
 
-    //print_file("data/mat2.data");
     puts("A");
     print_mat(d.A, d.n, d.p);
     puts("B");
@@ -14,4 +13,7 @@ int main(){
     print_mat(d.RES, d.n, d.m);
     puts("NEW");
     print_mat(mat.data, mat.n, mat.m);
+
+    destroy_matrix(mat);
+    destroy_data(d);
 }

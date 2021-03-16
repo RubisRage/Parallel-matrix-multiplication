@@ -1,6 +1,6 @@
 SHELL := /bin/fish
 ##
-# Paralle matrix multiplication
+# Parallel matrix multiplication
 #
 # @file
 # @version 0.1
