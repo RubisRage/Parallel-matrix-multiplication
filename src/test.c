@@ -14,6 +14,8 @@ int main(){
     puts("NEW");
     print_mat(mat.data, mat.n, mat.m);
 
+    printf("Equal: %d", mat_equals(d.RES, mat.data, mat.n, mat.m));
+
     destroy_matrix(mat);
     destroy_data(d);
 }

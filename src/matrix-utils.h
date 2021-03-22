@@ -1,7 +1,7 @@
 #ifndef MATRIX_UTILS_H
 #define MATRIX_UTILS_H
 
-#include <stdlib.h>
+#include <stdlib.h> // Needed for size_t declaration
 
 // Structure declarations
 
@@ -32,7 +32,8 @@ typedef struct
 // Function prototypes
 
 /*
-** Computes the dot product of matrices A and B concurrently using OpenMP C library.
+** Computes the dot product of matrices A and B concurrently. This function is implemented
+** on different translation units based on the technology used: OpenMP, Cuda, OpenMPI.
 **
 ** @param A - pointer to A matrix contents.
 ** @param B - pointer to B matrix contents.

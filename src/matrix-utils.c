@@ -127,7 +127,6 @@ void print_mat(double* mat, size_t n, size_t m){
 ** @return 1 if both matrices are equal, 0 otherwise.
 */
 int mat_equals(double* a, double* b, size_t n, size_t m){
-    if(n!=m) return 0;
 
     for(size_t i = 0; i < n*m; i++){
         if(a[i] != b[i]) return 0;
