@@ -1,18 +1,16 @@
 #include "matrix-utils.h"
 #include <stdio.h>
+#include <papi.h>
 
-int main(){
-    DATA d = read_mat("data/mat2.data");
+int main(int argc, char** argv){
+    DATA d = read_mat(argv[1]);
 
     puts("A");
-    print_mat(d.A, d.n, d.p);
     puts("B");
-    print_mat(d.B, d.p, d.m);
+    PAPI_hl_region_begin("dot-product");
     MATRIX mat = dot_product(d.A, d.B, d.n, d.p, d.m);
-    puts("RES");
-    print_mat(d.RES, d.n, d.m);
-    puts("NEW");
-    print_mat(mat.data, mat.n, mat.m);
+    PAPI_hl_region_end("dot-product");
+    puts("End.");
 
     printf("Equal: %d", mat_equals(d.RES, mat.data, mat.n, mat.m));
 

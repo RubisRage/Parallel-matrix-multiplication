@@ -1,4 +1,4 @@
-SHELL := /bin/fish
+SHELL := /bin/bash
 ##
 # Parallel matrix multiplication
 #
@@ -6,7 +6,8 @@ SHELL := /bin/fish
 # @version 0.1
 
 CC = gcc
-CFLAGS = -fopenmp -Wall -g
+CFLAGS = -fopenmp -Wall
+PAPI_FLAGS = -lpapi
 SRC_DIR = ./src
 BUILD_DIR = ./build
 SRC := $(shell find $(SRC_DIR) -name "*.c")
@@ -18,7 +19,7 @@ BIN = test
 all: directories $(BIN)
 
 $(BIN): $(OBJ)
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $(PAPI_FLAGS) $^ -o $@
 
 directories:
 	@mkdir -p $(BUILD_DIR)
