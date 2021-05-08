@@ -19,6 +19,7 @@ CUDA_SRC := $(SRC_DIR)/cuda/cuda-matmul.cu
 CUDA_OBJ := $(BUILD_DIR)/cuda/cuda-matmul.o
 OPENMP_SRC := $(SRC_DIR)/openmp/openmp-matmul.c
 OPENMP_OBJ := $(BUILD_DIR)/openmp/openmp-matmul.o
+MPI_SRC := $(wildcard $(SRC_DIR)/mpi/*.c) $(SRC_DIR)/matrix-utils.c
 
 .PHONY: clean directories
 
@@ -35,6 +36,9 @@ cuda-d: directories | $(CUDA_SRC) $(SRC)
 
 openmp: directories | $(OPENMP_OBJ) $(OBJ)
 	$(CC) $(CFLAGS) -fopenmp -o $@ $(OPENMP_OBJ) $(OBJ)
+
+mpi: $(MPI_SRC)
+	mpicc $(CFLAGS) -Wall $(MPI_SRC) -o $@
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
