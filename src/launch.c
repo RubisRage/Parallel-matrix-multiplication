@@ -24,10 +24,18 @@ int main(int argc, char** argv){
     }
 
     PAPI_hl_region_begin("dot-product");
-    MATRIX m = dot_product(d, rank, world_size);
+    MATRIX mat = dot_product(d, rank, world_size);
     PAPI_hl_region_end("dot-product");
 
+    if(rank==0){
+        printf("Output: %s\n", mat_equals(d.RES, mat.data, mat.n, mat.m)==1? "OK" : "ERROR");
+        destroy_data(d);
+        destroy_matrix(mat);
+    }
+
+
     MPI_Finalize();
+    return EXIT_SUCESSFUL;
 }
 
 #else // If not set up multicore/gpu program

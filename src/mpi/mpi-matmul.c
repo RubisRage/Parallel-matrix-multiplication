@@ -56,7 +56,6 @@ void share_work(DATA* d, int rank, int world_size, int* start, int* end){
 }
 
 double* __dot_product(double* a, double* b, size_t n, size_t p, size_t m, int start, int end){
-
     double* c = malloc(n*m*sizeof(double));
     if(c == NULL){
         perror("Error creating tmp array to contain matrix multiplication partial results");
@@ -71,7 +70,7 @@ double* __dot_product(double* a, double* b, size_t n, size_t p, size_t m, int st
             v += *(a + i*p + offset) * *(b + m*offset + j);
         }
 
-        c[index] = v;
+        c[index-start] = v;
     }
 
     return c;
@@ -80,11 +79,7 @@ double* __dot_product(double* a, double* b, size_t n, size_t p, size_t m, int st
 double* collect_outcome(double* c, size_t csize, int rank, int world_size, int start, int end){
 
     if(rank==0){
-        int a = 7;
-        printf("ID: %d", getpid());
-        fflush(stdout);
-        while(a);
-        c = realloc(c, csize);
+        c = realloc(c, csize*sizeof(double));
         if(c == NULL){
             perror("Not enough memory to store multiplication's outcome.");
             abort();
@@ -96,22 +91,15 @@ double* collect_outcome(double* c, size_t csize, int rank, int world_size, int s
             MPI_Status status;
             int step;
 
-            printf("Dead reciving.\n");
-            fflush(stdout);
-
             MPI_Recv(c+offset, csize, MPI_DOUBLE, i, 0, MPI_COMM_WORLD, &status);
             MPI_Get_count(&status, MPI_DOUBLE, &step);
 
-            printf("Nope just kidding\n");
-            fflush(stdout);
             offset += step;
         }
 
         return c;
     }else {
         MPI_Send(c, end-start, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
-        printf("I did my job\n");
-        fflush(stdout);
         return NULL;
     }
 }
@@ -131,6 +119,7 @@ MATRIX dot_product(DATA d, int rank, int world_size){
     } else {
         collect_outcome(c, d.n*d.m, rank, world_size, start, end);
         free(c);
+        destroy_data(d);
     }
 
     return m;

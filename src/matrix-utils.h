@@ -95,8 +95,18 @@ void print_file(char*);
 */
 int mat_equals(double* a, double* b, size_t n, size_t m);
 
+/*
+** Frees up dynamic memory used by a MATRIX structure.
+**
+** @param MATRIX who's memory is to be freed.
+*/
 void destroy_matrix(MATRIX);
 
+/*
+** Frees up dynamic memory used by a DATA structure.
+**
+** @param DATA who's memory is to be freed.
+*/
 void destroy_data(DATA);
 
 #endif /* MATRIX_UTILS_H */
