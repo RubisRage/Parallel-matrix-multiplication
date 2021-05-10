@@ -44,10 +44,9 @@ typedef struct
 ** @return MATRIX structure holding the data of A and B's dot product. More information
 ** about this structure can be found on the matrix-utils.h file.
 **
-** Note: Since this is a C (and not CUDA) defininition an if guard is used to prevent
-** definitions in .cu file.
+** Note: This function is not to be declared in .cu files to prevent C++ incompatibility
 */
-#ifndef CUDA
+#if !(defined(CUDA) || defined(MPI))
 MATRIX dot_product(double* A, double* B, size_t n, size_t p, size_t m);
 #endif
 

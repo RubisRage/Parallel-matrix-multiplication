@@ -40,9 +40,6 @@ extern "C" MATRIX dot_product(double* a, double* b, size_t n, size_t p, size_t m
     cudaMemcpy(db, b, p*m*sizeof(double), cudaMemcpyHostToDevice);
 
     __dot_product<<<blocks,MAX_THREADS_PER_BLOCK>>>(da, db, dc, n, p, m);
-    cudaError_t err;
-    if((err=cudaDeviceSynchronize())!=cudaSuccess){
-    }
 
     cudaMemcpy(c, dc, n*m*sizeof(double), cudaMemcpyDeviceToHost);
     MATRIX mat = {.data=c, .n=n, .m=m};
