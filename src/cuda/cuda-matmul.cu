@@ -6,6 +6,17 @@
 
 #define MAX_THREADS_PER_BLOCK 1024
 
+/*
+ * CUDA Kernel for computing the matrix multiplication.
+ *
+ * @param a Double pointer referring to the first matrix.
+ * @param b Double pointer referring to the second matrix.
+ * @param c Double pointer referring to device allocated memory
+ * for the result matrix.
+ * @param n Number of rows of a.
+ * @param p Number of columns of a and rows of b.
+ * @param m Number of columns of b.
+ * */
 __global__ void __dot_product(double* a, double* b, double* c,
                               size_t n, size_t p, size_t m){
     size_t index = threadIdx.x + blockIdx.x*blockDim.x;
@@ -22,6 +33,17 @@ __global__ void __dot_product(double* a, double* b, double* c,
     c[index] = v;
 }
 
+/*
+ * Computes the matrix multiplication between the matrices pointed by a and b.
+ *
+ * @param a Double pointer referring to the first matrix.
+ * @param b Double pointer referring to the second matrix.
+ * @param n Number of rows of a.
+ * @param p Number of columns of a and rows of b.
+ * @param m Number of columns of b.
+ *
+ * @return MATRIX structure containing the matrix multiplication.
+ * */
 extern "C" MATRIX dot_product(double* a, double* b, size_t n, size_t p, size_t m){
     double *da, *db, *dc;
     double* c = (double*)malloc(sizeof(double)*n*m);

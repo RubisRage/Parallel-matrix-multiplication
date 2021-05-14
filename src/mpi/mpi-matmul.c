@@ -5,6 +5,21 @@
 #include <unistd.h>
 #include "matrix-utils.h"
 
+/*
+** Function used to share the workload among all processes. Process with
+** rank 0 acts as a master dividing work and sharing the sending the
+** previously read data to each process.
+**
+** @param d For process with rank 0 the DATA structure containing the
+** information needed to compute the multiplication. For any other process
+** a DATA structure that will be initialized with the mentioned information.
+** @param rank Integer indication current process rank.
+** @param world_size Integer indication the total number of processes.
+** @param start Integer pointer in which will be stored the beginning of
+** range of elements that the current process has to compute.
+** @param end Integer pointer in which will be stored the index of the last
+** element, not included, that the current process has to compute.
+*/
 void share_work(DATA* d, int rank, int world_size, int* start, int* end){
     int dim[3];
 
@@ -55,6 +70,20 @@ void share_work(DATA* d, int rank, int world_size, int* start, int* end){
     MPI_Bcast(d->B, d->p*d->m, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 }
 
+/*
+** Computes a partion of the matrix multiplication a*b. The portion computed is in the range
+** [start, end).
+**
+** @param a Pointer to the elements matrix a.
+** @param b Pointer to the elements matrix b.
+** @param n Number of rows of a.
+** @param p Number of columns of a and rows of b.
+** @param m Number of columns of b.
+** @param start Index to the first element in the range of the elements to be computed.
+** @param end Index to the last element in the range of the elements to be computed, not included.
+**
+** @return Pointer to the result of the partial matrix multiplication.
+ */
 double* __dot_product(double* a, double* b, size_t n, size_t p, size_t m, int start, int end){
     double* c = malloc(n*m*sizeof(double));
     if(c == NULL){
@@ -76,6 +105,20 @@ double* __dot_product(double* a, double* b, size_t n, size_t p, size_t m, int st
     return c;
 }
 
+/*
+** Collect matrix multiplication results back to the process with rank 0.
+**
+** @param c double pointer to the partially computed matrix multiplication
+** @param csize Total number of elements of the complete matrix c
+** @param rank Rank of the process
+** @param world_size Total number of processes.
+** @param start Index pointing to the beginning of the subsection of the result matrix that
+** the current process has computed.
+** @param start Index pointing to the ending of the subsection of the result matrix that
+** the current process has computed.
+**
+** @return Double pointer referring the result of the matrix multiplication.
+*/
 double* collect_outcome(double* c, size_t csize, int rank, int world_size, int start, int end){
 
     if(rank==0){
@@ -104,6 +147,13 @@ double* collect_outcome(double* c, size_t csize, int rank, int world_size, int s
     }
 }
 
+/*
+** Computes the matrix multiplication between the two matrices passed.
+**
+** @param d DATA structure containing matrices A and B.
+** @param rank Rank of the current process.
+** @param world_size Total number of processes.
+*/
 MATRIX dot_product(DATA d, int rank, int world_size){
     int start, end;
     share_work(&d, rank, world_size, &start, &end);

@@ -6,6 +6,7 @@
 
 #include "matrix-utils.h"
 
+
 #ifdef MPI // If compiled with -DMPI set up multicomputer program
 
 MATRIX dot_product(DATA d, int rank, int size);
@@ -23,9 +24,9 @@ int main(int argc, char** argv){
         d = read_mat(argv[1]);
     }
 
-    PAPI_hl_region_begin("dot-product");
+    PAPI_hl_region_begin("MPI");
     MATRIX mat = dot_product(d, rank, world_size);
-    PAPI_hl_region_end("dot-product");
+    PAPI_hl_region_end("MPI");
 
     if(rank==0){
         printf("Output: %s\n", mat_equals(d.RES, mat.data, mat.n, mat.m)==1? "OK" : "ERROR");
@@ -35,29 +36,24 @@ int main(int argc, char** argv){
 
 
     MPI_Finalize();
-    return EXIT_SUCESSFUL;
+    return EXIT_SUCCESS;
 }
 
 #else // If not set up multicore/gpu program
 
 // OpenMP/CUDA main function
 int main(int argc, char** argv){
-    DATA d = read_mat(argv[1]);
-    int pflag = 0;
-
-    if(argc >= 3){
-        if(argv[2][0] == 'p') pflag = 1;
+    if(argc > 2){
+        fprintf(stderr, "Not enough arguments.\n");
     }
 
-    PAPI_hl_region_begin("dot-product");
+    DATA d = read_mat(argv[1]);
+
+    PAPI_hl_region_begin(SESSION);
     MATRIX mat = dot_product(d.A, d.B, d.n, d.p, d.m);
-    PAPI_hl_region_end("dot-product");
+    PAPI_hl_region_end(SESSION);
 
     printf("Output: %s\n", mat_equals(d.RES, mat.data, mat.n, mat.m)==1? "OK" : "ERROR");
-    if(pflag){
-        print_mat(d.RES, d.n, d.m);
-        print_mat(mat.data, mat.n, mat.m);
-    }
 
     destroy_matrix(mat);
     destroy_data(d);
