@@ -1,0 +1,35 @@
+{
+  "papi_version":"6.0.0.1",
+  "cpu_info":"Intel(R) Core(TM) i5-4460 CPU @ 3.20GHz",
+  "max_cpu_rate_mhz":"3400",
+  "min_cpu_rate_mhz":"800",
+  "event_definitions":{
+    "perf::TASK-CLOCK":{
+      "component":"perf_event",
+      "type":"delta"
+    },
+    "PAPI_TOT_INS":{
+      "component":"perf_event",
+      "type":"delta"
+    },
+    "PAPI_TOT_CYC":{
+      "component":"perf_event",
+      "type":"delta"
+    }
+  },
+  "threads":{
+    "0":{
+      "regions":{
+        "0":{
+          "name":"MPI",
+          "parent_region_id":"-1",
+          "cycles":"243055686036",
+          "real_time_nsec":"76000367333",
+          "perf::TASK-CLOCK":"74414458364",
+          "PAPI_TOT_INS":"161435556949",
+          "PAPI_TOT_CYC":"228373568041"
+        }
+      }
+    }
+  }
+}

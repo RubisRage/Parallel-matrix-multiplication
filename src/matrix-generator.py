@@ -4,35 +4,33 @@ import numpy as np
 import sys
 import struct
 
-dataname = "data/" + sys.argv[1] + ".data"
+dataname = sys.argv[1]
 n = int(sys.argv[2])
-p = int(sys.argv[3])
-m = int(sys.argv[4])
-max_value = int(sys.argv[5])
 
-rng = np.random.default_rng()
+a = (b := np.full((n,n), 5))
+c = np.full((n,n), 5*5*n)
 
-a = max_value*rng.random((n,p))
-b = max_value*rng.random((p,m))
-
-with open(dataname, "wb") as f:
+with open(dataname, "bw") as f:
     f.write(struct.pack("@N", n))
-    f.write(struct.pack("@N", p))
-    f.write(struct.pack("@N", m))
+    f.write(struct.pack("@N", n))
+    f.write(struct.pack("@N", n))
+
+    print("Matrix a")
 
     for row in a:
         for e in row:
-            print(e)
             f.write(struct.pack("@d", e))
+
+    print("Matrix b")
 
     for row in b:
         for e in row:
-            print(e)
             f.write(struct.pack("@d", e))
 
-    c = np.dot(a,b)
+    print("Matrix c")
 
     for row in c:
         for e in row:
-            print(e)
             f.write(struct.pack("@d", e))
+
+    print("Finished")

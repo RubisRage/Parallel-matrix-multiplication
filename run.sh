@@ -1,4 +1,3 @@
 #!/bin/bash
 
-cp -r ./mpi ./input ~/cloud
-mpirun -n 12 --hostfile ./hostfile ~/cloud/mpi ./input/mat1e3x1e3.data
+mpirun -n 12 --hostfile ./hostfile ~/cloud/mpi $1 -v
