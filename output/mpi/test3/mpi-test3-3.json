@@ -21,13 +21,13 @@
     "0":{
       "regions":{
         "0":{
-          "name":"seq",
+          "name":"MPI",
           "parent_region_id":"-1",
-          "cycles":"171519304",
-          "real_time_nsec":"53627222",
-          "perf::TASK-CLOCK":"53573047",
-          "PAPI_TOT_INS":"407569581",
-          "PAPI_TOT_CYC":"174295135"
+          "cycles":"93864409252",
+          "real_time_nsec":"29349425426",
+          "perf::TASK-CLOCK":"28903713872",
+          "PAPI_TOT_INS":"73135804184",
+          "PAPI_TOT_CYC":"43244068049"
         }
       }
     }
