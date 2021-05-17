@@ -23,11 +23,11 @@
         "0":{
           "name":"CUDA",
           "parent_region_id":"-1",
-          "cycles":"638038679",
-          "real_time_nsec":"199516604",
-          "perf::TASK-CLOCK":"196954990",
-          "PAPI_TOT_INS":"1010544547",
-          "PAPI_TOT_CYC":"503138566"
+          "cycles":"669194195",
+          "real_time_nsec":"209245931",
+          "perf::TASK-CLOCK":"195872166",
+          "PAPI_TOT_INS":"975187344",
+          "PAPI_TOT_CYC":"500724899"
         }
       }
     }

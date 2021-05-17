@@ -7,7 +7,7 @@
 # tests="test1 test2 test3 test4" # test3.data test4.data"
 tests="test250 test500 test750 test1 test2 test3 test4"
 
-for n in 4;do
+for n in 5;do
     for t in $tests;do
         echo output/seq/$t/seq-$t-$n.json
         ./seq input/$t.data

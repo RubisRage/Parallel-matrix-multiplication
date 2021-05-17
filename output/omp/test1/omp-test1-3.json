@@ -23,11 +23,11 @@
         "0":{
           "name":"omp",
           "parent_region_id":"-1",
-          "cycles":"3488470300",
-          "real_time_nsec":"1090775455",
-          "perf::TASK-CLOCK":"1083117517",
-          "PAPI_TOT_INS":"6757642106",
-          "PAPI_TOT_CYC":"3451510388"
+          "cycles":"3468272879",
+          "real_time_nsec":"1084462043",
+          "perf::TASK-CLOCK":"1068623495",
+          "PAPI_TOT_INS":"6757634679",
+          "PAPI_TOT_CYC":"3407250830"
         }
       }
     }

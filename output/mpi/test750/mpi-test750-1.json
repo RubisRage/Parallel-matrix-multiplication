@@ -23,11 +23,11 @@
         "0":{
           "name":"MPI",
           "parent_region_id":"-1",
-          "cycles":"2410794547",
-          "real_time_nsec":"753870658",
-          "perf::TASK-CLOCK":"752381071",
-          "PAPI_TOT_INS":"1295407554",
-          "PAPI_TOT_CYC":"1119837439"
+          "cycles":"2393412788",
+          "real_time_nsec":"748386036",
+          "perf::TASK-CLOCK":"744057454",
+          "PAPI_TOT_INS":"1285139511",
+          "PAPI_TOT_CYC":"1098659127"
         }
       }
     }

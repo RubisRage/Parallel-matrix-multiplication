@@ -23,11 +23,11 @@
         "0":{
           "name":"seq",
           "parent_region_id":"-1",
-          "cycles":"388740972225",
-          "real_time_nsec":"121549929485",
-          "perf::TASK-CLOCK":"120553820144",
-          "PAPI_TOT_INS":"702189213512",
-          "PAPI_TOT_CYC":"397436978465"
+          "cycles":"375839600504",
+          "real_time_nsec":"117519904798",
+          "perf::TASK-CLOCK":"117511531322",
+          "PAPI_TOT_INS":"702189169125",
+          "PAPI_TOT_CYC":"396218637892"
         }
       }
     }

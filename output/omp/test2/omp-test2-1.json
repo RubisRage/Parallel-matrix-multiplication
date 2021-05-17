@@ -21,13 +21,13 @@
     "0":{
       "regions":{
         "0":{
-          "name":"seq",
+          "name":"omp",
           "parent_region_id":"-1",
-          "cycles":"255230326445",
-          "real_time_nsec":"79804615181",
-          "perf::TASK-CLOCK":"78857191410",
-          "PAPI_TOT_INS":"208084138434",
-          "PAPI_TOT_CYC":"252659485851"
+          "cycles":"32256401616",
+          "real_time_nsec":"10086114797",
+          "perf::TASK-CLOCK":"9997269418",
+          "PAPI_TOT_INS":"54024085290",
+          "PAPI_TOT_CYC":"31823284985"
         }
       }
     }
