@@ -9,9 +9,12 @@
 
 #ifdef MPI // If compiled with -DMPI set up multicomputer program
 
+//Function prototype for MPI programs
 MATRIX dot_product(DATA d, int rank, int size);
 
-// MPI main function
+/*
+** MPI main function.
+*/
 int main(int argc, char** argv){
     MPI_Init(NULL,NULL);
 
@@ -41,7 +44,11 @@ int main(int argc, char** argv){
 
 #else // If not set up multicore/gpu program
 
-// OpenMP/CUDA main function
+/*
+** OpenMP/CUDA main function:
+**
+** SESSION macro must be defined on compilation time.
+*/
 int main(int argc, char** argv){
     if(argc > 2){
         fprintf(stderr, "Not enough arguments.\n");

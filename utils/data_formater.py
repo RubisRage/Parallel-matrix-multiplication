@@ -15,7 +15,17 @@ dirs = ("seq",
         "cuda",
         "mpi")
 
-subdirs = ("test250", "test500", "test750", "test1", "test2", "test3", "test4")
+subdirs =  ("test250",
+            "test500",
+            "test750",
+            "test1",
+            "test1.5",
+            "test2",
+            "test2.5",
+            "test3",
+            "test3.5",
+            "test4",
+            "test4.5")
 
 def fill(df: pd.DataFrame):
     for d in dirs:
@@ -32,7 +42,7 @@ def fill(df: pd.DataFrame):
 def main():
 
     col = subdirs[:]
-    scol = [str(i) for i in range(1,6)]
+    scol = [str(i) for i in range(1,8)]
     row = dirs
     srow = attributes
 
@@ -41,13 +51,17 @@ def main():
     mcol = pd.MultiIndex.from_product([col,scol])
     mrow = pd.MultiIndex.from_product([row,srow])
 
-    df = pd.DataFrame(np.full(shape, -1), index=mrow, columns=mcol)
+    df = pd.DataFrame(np.full(shape, np.nan), index=mrow, columns=mcol)
     fill(df)
 
-    print(df)
+    gmean = pd.DataFrame(np.full((mrow.size, len(col)), np.nan), index=mrow, columns=col)
+    for c in col:
+        gmean[c] = df[c].aggregate(lambda ite: ite.prod()**(1.0/len(ite)), axis="columns")
+
+    print(gmean)
 
     np.savetxt("test2.csv", df.values,delimiter=',')
-    df.to_excel("exe_test.xlsx")
+    #df.to_excel("exe_test.xlsx")
 
 if __name__=="__main__":
     main()
