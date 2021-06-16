@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <papi.h>
 #include "matrix-utils.h"
 
 /*
@@ -156,7 +157,9 @@ double* collect_outcome(double* c, size_t csize, int rank, int world_size, int s
 */
 MATRIX dot_product(DATA d, int rank, int world_size){
     int start, end;
+    PAPI_hl_region_begin("send-mat");
     share_work(&d, rank, world_size, &start, &end);
+    PAPI_hl_region_end("send-mat");
 
     double* c = __dot_product(d.A, d.B, d.n, d.p, d.m, start, end);
 
@@ -165,7 +168,9 @@ MATRIX dot_product(DATA d, int rank, int world_size){
     if(rank == 0){
         m.n = d.n;
         m.m = d.m;
+        PAPI_hl_region_begin("recv-mat");
         m.data = collect_outcome(c, d.n*d.m, rank, world_size, start, end);
+        PAPI_hl_region_end("recv-mat");
     } else {
         collect_outcome(c, d.n*d.m, rank, world_size, start, end);
         free(c);

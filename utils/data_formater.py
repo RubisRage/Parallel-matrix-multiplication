@@ -27,41 +27,75 @@ subdirs =  ("test250",
             "test4",
             "test4.5")
 
-def fill(df: pd.DataFrame):
+def subfill(main_df: pd.DataFrame, mpi_sr: pd.DataFrame, data: dict, ind: list[str]) -> None:
+    """
+    For a given test instance, data, partially set the values of the
+    given data frames as specified by ind with those of the data
+    dictionary
+    """
+    # ind example value: seq-test2.5-7.json -> 0: seq, 1: test2.5, (2,0): 7
+    for i, middle_ind in enumerate(("none", "Send", "Recv")):
+        for a in attributes:
+            if i != 0 and str(i) in data:
+                mpi_sr.loc[ind[0], middle_ind, a].at[ind[1],ind[2][0]] = data[str(i)][a]
+            else:
+                main_df.loc[ind[0], a].at[ind[1],ind[2][0]] = data[str(i)][a]
+
+
+def fill(main_df: pd.DataFrame, mpi_sr: pd.DataFrame) -> None:
+    """
+    Traverse output directory loading data into the given dataFrames
+    """
+
+    # For each technique used (MPI, OMP, CUDA, etc.)
     for d in dirs:
+        # For each test
         for sd in subdirs:
+            # Get all files within a test directory
             for root,_,files in os.walk(os.path.join("output",d,sd)):
+                # For each instance of that test
                 for f in files:
                     ind = f.split("-")
                     with open(root+"/"+f) as js:
-                         data = json.load(js)["threads"]["0"]["regions"]["0"]
-                    for a in attributes:
-                        df.loc[ind[0], a].at[ind[1],ind[2][0]] = data[a]
+                         data = json.load(js)["threads"]["0"]["regions"]
+                         subfill(main_df, mpi_sr, data, ind)
 
 
 def main():
 
+    # Multilevel indices common to all dataframes
     col = subdirs[:]
     scol = [str(i) for i in range(1,8)]
+    mcol = pd.MultiIndex.from_product([col,scol])
+
+    # Create main data frame indices
+    # Multilevel columns for main dataframe
     row = dirs
     srow = attributes
-
-    shape = (len(srow)*len(row),len(col)*len(scol))
-
-    mcol = pd.MultiIndex.from_product([col,scol])
     mrow = pd.MultiIndex.from_product([row,srow])
 
-    df = pd.DataFrame(np.full(shape, np.nan), index=mrow, columns=mcol)
-    fill(df)
+    # Create MPI send/recive time row indices
+    mpi_row = ("mpi", "mpi_br") # br meaning by matrix multiplication by rows
+    mpi_srow = ("Send", "Recv")
+    mpi_mrow = pd.MultiIndex.from_product([mpi_row,mpi_srow])
 
-    gmean = pd.DataFrame(np.full((mrow.size, len(col)), np.nan), index=mrow, columns=col)
-    for c in col:
-        gmean[c] = df[c].aggregate(lambda ite: ite.prod()**(1.0/len(ite)), axis="columns")
+    # Create main dataframe and MPI send/recive dataframe
+    # Main data frame
+    shape = (len(srow)*len(row),len(col)*len(scol)) # Shape of the current dataframe
+    main_df = pd.DataFrame(np.full(shape, np.nan), index=mrow, columns=mcol)
 
-    print(gmean)
+    # MPI send/recive data frame
+    shape = (len(mpi_srow)*len(mpi_row),len(col)*len(scol))
+    mpi_sr = pd.DataFrame(np.full(shape, np.nan), index=mpi_mrow, columns=mcol)
 
-    np.savetxt("test2.csv", df.values,delimiter=',')
+    print(main_df)
+    print(mpi_sr)
+
+#    fill(main_df, mpi_sr)
+
+#    np.savetxt("test2.csv", df.values,delimiter=',')
     #df.to_excel("exe_test.xlsx")
+
 
 if __name__=="__main__":
     main()
