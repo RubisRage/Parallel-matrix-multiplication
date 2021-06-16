@@ -20,6 +20,7 @@ SEQ_SRC := $(SRC_DIR)/seq/seq.c
 CUDA_SRC := $(SRC_DIR)/cuda/cuda-matmul.cu
 OPENMP_SRC := $(SRC_DIR)/openmp/openmp-matmul.c
 MPI_SRC := $(wildcard $(SRC_DIR)/mpi/*.c) $(SRC)
+MPI_br_SRC := $(SRC_DIR)/mpi_br/mpi_br-matmul.c
 
 .PHONY: clean
 
@@ -36,6 +37,9 @@ omp: $(OPENMP_SRC) $(SRC)
 
 mpi: $(MPI_SRC)
 	mpicc $(CFLAGS) -Wall -DMPI $(MPI_SRC)  -o $@
+
+mpi_br: $(MPI_br_SRC) $(SRC)
+	mpicc $(CFLAGS) -Wall -DMPI $^ -o $@
 
 clean:
 	@rm -f $(BIN)

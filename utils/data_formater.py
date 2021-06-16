@@ -13,7 +13,8 @@ attributes = ("cycles",
 dirs = ("seq",
         "omp",
         "cuda",
-        "mpi")
+        "mpi",
+        "mpi_br")
 
 subdirs =  ("test250",
             "test500",
@@ -29,7 +30,7 @@ subdirs =  ("test250",
 
 def subfill(main_df: pd.DataFrame, mpi_sr: pd.DataFrame, data: dict, ind: list[str]) -> None:
     """
-    For a given test instance, data, partially set the values of the
+    For a given test instance, data, set the partial values of the
     given data frames as specified by ind with those of the data
     dictionary
     """
@@ -38,7 +39,7 @@ def subfill(main_df: pd.DataFrame, mpi_sr: pd.DataFrame, data: dict, ind: list[s
         for a in attributes:
             if i != 0 and str(i) in data:
                 mpi_sr.loc[ind[0], middle_ind, a].at[ind[1],ind[2][0]] = data[str(i)][a]
-            else:
+            elif i == 0:
                 main_df.loc[ind[0], a].at[ind[1],ind[2][0]] = data[str(i)][a]
 
 
@@ -77,23 +78,25 @@ def main():
     # Create MPI send/recive time row indices
     mpi_row = ("mpi", "mpi_br") # br meaning by matrix multiplication by rows
     mpi_srow = ("Send", "Recv")
-    mpi_mrow = pd.MultiIndex.from_product([mpi_row,mpi_srow])
+    mpi_ssrow = attributes
+    mpi_mrow = pd.MultiIndex.from_product([mpi_row,mpi_srow,mpi_ssrow])
 
     # Create main dataframe and MPI send/recive dataframe
     # Main data frame
-    shape = (len(srow)*len(row),len(col)*len(scol)) # Shape of the current dataframe
+    shape = (mrow.size , mcol.size) # Shape of the current dataframe
     main_df = pd.DataFrame(np.full(shape, np.nan), index=mrow, columns=mcol)
 
     # MPI send/recive data frame
-    shape = (len(mpi_srow)*len(mpi_row),len(col)*len(scol))
+    shape = (mpi_mrow.size, mcol.size)
     mpi_sr = pd.DataFrame(np.full(shape, np.nan), index=mpi_mrow, columns=mcol)
 
-    print(main_df)
+    fill(main_df, mpi_sr)
+
     print(mpi_sr)
+    print(main_df)
 
-#    fill(main_df, mpi_sr)
-
-#    np.savetxt("test2.csv", df.values,delimiter=',')
+    # np.savetxt("main-results-v4.csv", main_df.values, delimiter=',')
+    # np.savetxt("mpi_sr-results.csv", mpi_sr.values, delimiter=',')
     #df.to_excel("exe_test.xlsx")
 
 

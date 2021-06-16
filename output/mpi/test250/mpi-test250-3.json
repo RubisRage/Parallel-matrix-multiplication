@@ -23,11 +23,29 @@
         "0":{
           "name":"MPI",
           "parent_region_id":"-1",
-          "cycles":"323685847",
-          "real_time_nsec":"101207423",
-          "perf::TASK-CLOCK":"100700196",
-          "PAPI_TOT_INS":"136073861",
-          "PAPI_TOT_CYC":"94358701"
+          "cycles":"396158112",
+          "real_time_nsec":"123866996",
+          "perf::TASK-CLOCK":"92721213",
+          "PAPI_TOT_INS":"163405533",
+          "PAPI_TOT_CYC":"74796339"
+        },
+        "1":{
+          "name":"send-mat",
+          "parent_region_id":"0",
+          "cycles":"307454140",
+          "real_time_nsec":"96136705",
+          "perf::TASK-CLOCK":"65383806",
+          "PAPI_TOT_INS":"115132517",
+          "PAPI_TOT_CYC":"50336103"
+        },
+        "2":{
+          "name":"recv-mat",
+          "parent_region_id":"0",
+          "cycles":"70081880",
+          "real_time_nsec":"21912835",
+          "perf::TASK-CLOCK":"21747846",
+          "PAPI_TOT_INS":"11647561",
+          "PAPI_TOT_CYC":"7728239"
         }
       }
     }
