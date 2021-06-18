@@ -1,0 +1,5 @@
+# Ignore input files: Machine dependent and too heavy
+input/*
+
+# Ignore auto generated images from ipython notebook
+performance-analysis_files

@@ -10,7 +10,7 @@ CC = gcc
 CFLAGS = -lpapi -g -I$(SRC_DIR)
 CUDA_FLAGS = -lpapi -g -G -I$(SRC_DIR)
 
-BIN = cuda omp mpi seq
+BIN = cuda omp mpi seq mpi_br
 SRC_DIR = ./src
 
 SRC := $(wildcard $(SRC_DIR)/*.c)
@@ -19,27 +19,27 @@ OBJ := $(patsubst $(SRC_DIR)%.c,$(BUILD_DIR)%.o,$(SRC))
 SEQ_SRC := $(SRC_DIR)/seq/seq.c
 CUDA_SRC := $(SRC_DIR)/cuda/cuda-matmul.cu
 OPENMP_SRC := $(SRC_DIR)/openmp/openmp-matmul.c
-MPI_SRC := $(wildcard $(SRC_DIR)/mpi/*.c) $(SRC)
+MPI_SRC := $(wildcard $(SRC_DIR)/mpi/*.c)
 MPI_br_SRC := $(SRC_DIR)/mpi_br/mpi_br-matmul.c
 
 .PHONY: clean
 
-all: seq cuda omp mpi
+all: $(BIN)
 
 seq: $(SRC) $(SEQ_SRC)
-	$(CC) $(CFLAGS) -DSESSION='"seq"' -o $@ $(SRC) $(SEQ_SRC)
+	$(CC) $(CFLAGS) -DSESSION='"seq"' -o $@ $^
 
 cuda: $(CUDA_SRC) $(SRC)
-	nvcc $(CUDA_FLAGS) -DSESSION='"CUDA"' -o $@ $(CUDA_SRC) $(SRC)
+	nvcc $(CUDA_FLAGS) -DSESSION='"CUDA"' -o $@ $^
 
 omp: $(OPENMP_SRC) $(SRC)
 	$(CC) $(CFLAGS) -DSESSION='"omp"' -fopenmp -o $@ $(OPENMP_SRC) $(SRC)
 
-mpi: $(MPI_SRC)
-	mpicc $(CFLAGS) -Wall -DMPI $(MPI_SRC)  -o $@
+mpi: $(MPI_SRC) $(SRC)
+	mpicc $(CFLAGS) -Wall -DMPI -o $@ $^
 
 mpi_br: $(MPI_br_SRC) $(SRC)
-	mpicc $(CFLAGS) -Wall -DMPI $^ -o $@
+	mpicc $(CFLAGS) -Wall -DMPI -o $@ $^
 
 clean:
 	@rm -f $(BIN)
