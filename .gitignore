@@ -3,3 +3,11 @@ input/*
 
 # Ignore auto generated images from ipython notebook
 performance-analysis_files
+
+# Ignore executables
+./mpi
+./mpi_br
+./cuda
+./cuda_dim
+./omp
+./seq

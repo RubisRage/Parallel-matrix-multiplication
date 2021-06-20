@@ -23,29 +23,29 @@
         "0":{
           "name":"MPI",
           "parent_region_id":"-1",
-          "cycles":"15487631756",
-          "real_time_nsec":"4842655570",
-          "perf::TASK-CLOCK":"3898549548",
-          "PAPI_TOT_INS":"10174790084",
-          "PAPI_TOT_CYC":"6667330456"
+          "cycles":"15331390047",
+          "real_time_nsec":"4793790690",
+          "perf::TASK-CLOCK":"4743116761",
+          "PAPI_TOT_INS":"10628345875",
+          "PAPI_TOT_CYC":"6530013962"
         },
         "1":{
           "name":"send-mat",
           "parent_region_id":"0",
-          "cycles":"4298286796",
-          "real_time_nsec":"1343988346",
-          "perf::TASK-CLOCK":"887066170",
-          "PAPI_TOT_INS":"531682205",
-          "PAPI_TOT_CYC":"387375661"
+          "cycles":"4273940484",
+          "real_time_nsec":"1336371020",
+          "perf::TASK-CLOCK":"1309115702",
+          "PAPI_TOT_INS":"893911065",
+          "PAPI_TOT_CYC":"504914643"
         },
         "2":{
           "name":"recv-mat",
           "parent_region_id":"0",
-          "cycles":"3695278296",
-          "real_time_nsec":"1155435969",
-          "perf::TASK-CLOCK":"1152296660",
-          "PAPI_TOT_INS":"638221474",
-          "PAPI_TOT_CYC":"407318695"
+          "cycles":"5396336807",
+          "real_time_nsec":"1687316233",
+          "perf::TASK-CLOCK":"1687257368",
+          "PAPI_TOT_INS":"729549981",
+          "PAPI_TOT_CYC":"479768404"
         }
       }
     }
