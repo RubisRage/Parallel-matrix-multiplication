@@ -10,7 +10,7 @@ CC = gcc
 CFLAGS = -lpapi -g -I$(SRC_DIR)
 CUDA_FLAGS = -lpapi -g -G -I$(SRC_DIR)
 
-BIN = cuda omp mpi seq mpi_br
+BIN = cuda cuda_dim omp mpi seq mpi_br
 SRC_DIR = ./src
 
 SRC := $(wildcard $(SRC_DIR)/*.c)
@@ -31,6 +31,9 @@ seq: $(SRC) $(SEQ_SRC)
 
 cuda: $(CUDA_SRC) $(SRC)
 	nvcc $(CUDA_FLAGS) -DSESSION='"CUDA"' -o $@ $^
+
+cuda_dim: $(CUDA_SRC) $(SRC)
+	nvcc $(CUDA_FLAGS) -DSESSION='"CUDA_dim"' -o $@ $^
 
 omp: $(OPENMP_SRC) $(SRC)
 	$(CC) $(CFLAGS) -DSESSION='"omp"' -fopenmp -o $@ $(OPENMP_SRC) $(SRC)

@@ -98,15 +98,15 @@ double* __dot_product(double* a, double* b, size_t n, size_t p, size_t m, int st
         abort();
     }
 
-    for(int i = start; i < end; i++){
+    for(int i = 0; i < end-start; i++){
         for(int j = 0; j < m; j++){
             double v = 0.0;
 
             for(int offset = 0; offset < p; offset++){
-                v += a[(i-start)*p + offset] * b[offset*m + j];
+                v += a[i*p + offset] * b[offset*m + j];
             }
 
-            c[(i-start)*m + j] = v;
+            c[i*m + j] = v;
         }
     }
 

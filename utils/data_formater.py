@@ -95,8 +95,8 @@ def main():
     print(mpi_sr)
     print(main_df)
 
-    # np.savetxt("main-results-v4.csv", main_df.values, delimiter=',')
-    # np.savetxt("mpi_sr-results.csv", mpi_sr.values, delimiter=',')
+    np.savetxt("main-results-v55555.csv", main_df.values, delimiter=',')
+    np.savetxt("mpi_sr-results-v2.csv", mpi_sr.values, delimiter=',')
     #df.to_excel("exe_test.xlsx")
 
 
