@@ -4,6 +4,9 @@ input/*
 # Ignore auto generated images from ipython notebook
 performance-analysis_files
 
+# Ignore predator output files
+predator_output
+
 # Ignore executables
 ./mpi
 ./mpi_br
