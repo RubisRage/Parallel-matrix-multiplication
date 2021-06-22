@@ -14,7 +14,8 @@ dirs = ("seq",
         "omp",
         "cuda",
         "mpi",
-        "mpi_br")
+        "mpi_br",
+        "cuda_dim")
 
 subdirs =  ("test250",
             "test500",
@@ -92,12 +93,10 @@ def main():
 
     fill(main_df, mpi_sr)
 
-    print(mpi_sr)
-    print(main_df)
-
-    np.savetxt("main-results-v55555.csv", main_df.values, delimiter=',')
-    np.savetxt("mpi_sr-results-v2.csv", mpi_sr.values, delimiter=',')
-    #df.to_excel("exe_test.xlsx")
+    np.savetxt("results/total_time.csv", main_df.values, delimiter=',')
+    np.savetxt("results/mpi_sr_time.csv", mpi_sr.values, delimiter=',')
+    main_df.to_excel("results/total_time.xlsx")
+    mpi_sr.to_excel("results/mpi_sr_time.xlsx")
 
 
 if __name__=="__main__":

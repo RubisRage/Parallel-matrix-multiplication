@@ -18,6 +18,7 @@ OBJ := $(patsubst $(SRC_DIR)%.c,$(BUILD_DIR)%.o,$(SRC))
 
 SEQ_SRC := $(SRC_DIR)/seq/seq.c
 CUDA_SRC := $(SRC_DIR)/cuda/cuda-matmul.cu
+CUDA_dim_SRC := $(SRC_DIR)/cuda_dim/cuda_dim-matmul.cu
 OPENMP_SRC := $(SRC_DIR)/openmp/openmp-matmul.c
 MPI_SRC := $(wildcard $(SRC_DIR)/mpi/*.c)
 MPI_br_SRC := $(SRC_DIR)/mpi_br/mpi_br-matmul.c
@@ -32,8 +33,8 @@ seq: $(SRC) $(SEQ_SRC)
 cuda: $(CUDA_SRC) $(SRC)
 	nvcc $(CUDA_FLAGS) -DSESSION='"CUDA"' -o $@ $^
 
-cuda_dim: $(CUDA_SRC) $(SRC)
-	nvcc $(CUDA_FLAGS) -DSESSION='"CUDA_dim"' -o $@ $^
+cuda_dim: $(CUDA_dim_SRC) $(SRC)
+	nvcc $(CUDA_FLAGS) -lm -DSESSION='"CUDA_dim"' -o $@ $^
 
 omp: $(OPENMP_SRC) $(SRC)
 	$(CC) $(CFLAGS) -DSESSION='"omp"' -fopenmp -o $@ $(OPENMP_SRC) $(SRC)
