@@ -30,6 +30,7 @@ void share_work(DATA* d, int rank, int world_size, int* start, int* end){
 
     MPI_Bcast(dim, 3, MPI_INT, 0, MPI_COMM_WORLD);
 
+    /* Master process */
     if(rank==0){
         int mat_size = d->n*d->m;
         int base_chunk = mat_size/world_size;
@@ -44,18 +45,18 @@ void share_work(DATA* d, int rank, int world_size, int* start, int* end){
         }
 
         for(int i = 1; i < world_size; i++){
+            int range[2] = {offset, offset+base_chunk};
+            offset += base_chunk;
+
             if(i < remainder){
-                int range[2] = {offset, offset+base_chunk+1};
-                MPI_Send(range, 2, MPI_INT, i, 0, MPI_COMM_WORLD);
-                offset += base_chunk+1;
-            } else {
-                int range[2] = {offset, offset+base_chunk};
-                MPI_Send(range, 2, MPI_INT, i, 0, MPI_COMM_WORLD);
-                offset += base_chunk;
+                range[1]++;
+                offset++;
             }
+
+            MPI_Send(range, 2, MPI_INT, i, 0, MPI_COMM_WORLD);     /* Send assigned range of rows */
         }
 
-
+    /* Slave process */
     }else{
         int range[2];
         MPI_Recv(range, 2, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
